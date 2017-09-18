@@ -14,6 +14,10 @@ sportspot_fields = {
     'address': fields.String,
 }
 
+class Home(Resource):
+    def get(self):
+        return 'Dockerized', 200
+
 
 class Spot(Resource):
     @marshal_with(sportspot_fields)
@@ -61,4 +65,3 @@ class SpotList(Resource):
         session.commit()
 
         return session.query(SportSpot).order_by(SportSpot.id.desc()).first()
-

@@ -7,7 +7,7 @@ Base = declarative_base()
 
 class SportSpot(Base):
 
-    __tablename__ = 'sport_spots'
+    __tablename__ = 'spots'
     
     id = Column(Integer, primary_key=True)
     title = Column(String(80))

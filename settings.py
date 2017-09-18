@@ -1,8 +1,8 @@
 POSTGRES = {
-    'user': 'val',
-    'pw': '',
-    'db': 'sportspots',
-    'host': 'localhost',
+    'user': 'sportspots',
+    'pw': 'sportspotspass',
+    'db': 'spotsdb',
+    'host': '172.17.0.2',
     'port': '5432',
 }
 
