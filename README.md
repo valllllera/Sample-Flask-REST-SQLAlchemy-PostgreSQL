@@ -32,7 +32,7 @@ docker build -t sport-spot:latest .
 docker run --name sport-spot-postgres -d  -p 5000:5000 sport-spot
 ```
 
-## API Demo
+## API Description
 ### http://0.0.0.0:5000/spots | GET
 Returns the list of spots:
 ```
