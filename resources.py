@@ -64,4 +64,4 @@ class SpotList(Resource):
         session.add(s)
         session.commit()
 
-        return session.query(SportSpot).order_by(SportSpot.id.desc()).first()
+        return session.query(SportSpot).order_by(SportSpot.id.desc()).first(), 201
