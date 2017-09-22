@@ -1,11 +1,13 @@
 from flask_restful import reqparse, abort, Resource, fields, marshal_with
+from flask import g
 
 from models import SportSpot
 from models import User
 
 from db import session
 
-
+from flask_httpauth import HTTPBasicAuth
+auth = HTTPBasicAuth()
 
 parser = reqparse.RequestParser()
 parser.add_argument('title', type=str)
@@ -91,10 +93,10 @@ class Register(Resource):
         password = args['password']
 
         if username is None or password is None:
-            abort(400)
+            abort(400, message="Couldn't create the user, missing params")
         if session.query(User).filter_by(username = username).first() is not None:
             abort(404, message="User {} already exist".format(username))
-            
+
         user = User(username = username)
         user.hash_password(password)
         session.add(user)
@@ -104,3 +106,30 @@ class Register(Resource):
         if not reged_user:
             abort(404, message="User {} doesn't exist".format(username))
         return reged_user
+
+
+class Token(Resource):
+    @auth.login_required
+    def get(self):
+        token = g.user.generate_auth_token()
+        return 'token {}'.format(token.decode('ascii'))
+
+class HomeAuth(Resource):
+    @auth.login_required
+    def get(self):
+        token = g.user.generate_auth_token()
+        return 'Hi {} your pass hash is: {}!'.format(g.user.username, g.user.password_hash)
+
+@auth.verify_password
+def verify_password(username_or_token, password):
+
+    # first try to authenticate by token
+    user = User.verify_auth_token(username_or_token)
+    if not user:
+        
+        # try to authenticate with username/password
+        user = session.query(User).filter_by(username=username_or_token).first()
+        if not user or not user.verify_password(password):
+            return False
+    g.user = user
+    return True

@@ -5,6 +5,10 @@ from itsdangerous import (TimedJSONWebSignatureSerializer
                           as Serializer, BadSignature, SignatureExpired)
 from passlib.apps import custom_app_context as pwd_context
 
+from settings import SECRET_KEY
+
+from db import session
+
 Base = declarative_base()
     
 
@@ -34,6 +38,23 @@ class User(Base):
     def verify_password(self, password):
         return pwd_context.verify(password, self.password_hash)
 
+    def generate_auth_token(self, expiration = 60000):
+        s = Serializer(SECRET_KEY, expires_in = expiration)
+        return s.dumps({ 'id': self.id })
+
+    @staticmethod
+    def verify_auth_token(token):
+        s = Serializer(SECRET_KEY)
+        try:
+            data = s.loads(token)
+        except SignatureExpired:
+            return None # valid token, but expired
+        except BadSignature:
+            return None # invalid token
+        user = session.query(User).filter(User.id == data['id']).first()
+        return user
+
+
 
 if __name__ == "__main__":
     from sqlalchemy import create_engine
@@ -41,6 +62,7 @@ if __name__ == "__main__":
     engine = create_engine(DB_URI)
     Base.metadata.drop_all(engine)
     Base.metadata.create_all(engine)
+
 
 
 
