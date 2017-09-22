@@ -1,3 +1,9 @@
 Flask==0.12.2
 Flask-RESTful==0.3.6
 SQLAlchemy==1.1.14
+Flask-Cors==3.0.3
+Flask-Login==0.4.0
+
+itsdangerous==0.24
+Werkzeug==0.12.2
+passlib==1.7.1
