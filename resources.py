@@ -43,7 +43,7 @@ class Spot(Resource):
             abort(404, message="Spot {} doesn't exist".format(spot_id))
         return spot
 
-    
+    @auth.login_required
     def delete(self, spot_id):
         spot = session.query(SportSpot).filter(SportSpot.id == spot_id).first()
         if not spot:
@@ -53,6 +53,7 @@ class Spot(Resource):
         return {}, 204
 
 
+    @auth.login_required
     @marshal_with(sportspot_fields)
     def put(self, spot_id):
         parsed_args = parser.parse_args()
@@ -70,6 +71,7 @@ class SpotList(Resource):
         spots = session.query(SportSpot).all()
         return spots
 
+    @auth.login_required
     @marshal_with(sportspot_fields)
     def post(self):
         args = parser.parse_args()
@@ -78,6 +80,7 @@ class SpotList(Resource):
         s = SportSpot()
         s.title = args['title']
         s.address = args['address']
+        s.author_id = session.query(User).filter(User.username == g.user.username).first().id
 
         session.add(s)
         session.commit()

@@ -1,4 +1,5 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 
 from itsdangerous import (TimedJSONWebSignatureSerializer
@@ -19,6 +20,7 @@ class SportSpot(Base):
     id = Column(Integer, primary_key=True)
     title = Column(String(80))
     address = Column(String(200))
+    author_id = Column(Integer, ForeignKey('users.id'))
 
     def __repr__(self):
         return '<Spot %r>' % self.title
