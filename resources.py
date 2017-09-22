@@ -30,6 +30,10 @@ user_fields = {
     'password_hash': fields.String,
 }
 
+token_field = {
+    'token': fields.String
+}
+
 class Home(Resource):
     def get(self):
         return 'Dockerized', 200

@@ -1,13 +1,8 @@
 from sqlalchemy import Column, Integer, String, ForeignKey
-from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
-
-from itsdangerous import (TimedJSONWebSignatureSerializer
-                          as Serializer, BadSignature, SignatureExpired)
 from passlib.apps import custom_app_context as pwd_context
 
 from settings import SECRET_KEY
-
 from db import session
 
 Base = declarative_base()
