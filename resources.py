@@ -31,7 +31,7 @@ user_fields = {
 }
 
 token_field = {
-    'token': fields.String
+    'title': fields.String
 }
 
 class Home(Resource):
