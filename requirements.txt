@@ -5,6 +5,6 @@ Flask-Cors==3.0.3
 Flask-Login==0.4.0
 
 itsdangerous==0.24
-Werkzeug==0.12.2
+Werkzeug==0.15.3
 passlib==1.7.1
 Flask-HTTPAuth==3.2.3
